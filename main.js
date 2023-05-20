@@ -1,34 +1,41 @@
-import firestore from "./config.js";
-// Initialize Firebase
+import {
+  firestore,
+  doc,
+  setDoc,
+  getDocs,
+  addDoc,
+  collection,
+} from "./config.js";
+
 function uploadFile() {
-  var fileInput = document.getElementById("fileInput");
-  var file = fileInput.files[0];
-  var reader = new FileReader();
+  let fileInput = document.getElementById("fileInput");
+  let file = fileInput.files[0];
+  let reader = new FileReader();
   console.log("file", file);
   reader.onload = function (e) {
-    var contents = e.target.result;
+    let contents = e.target.result;
 
     // Convert text file contents to JSON
-    var jsonData = convertToJSON(contents);
+    let jsonData = convertToJSON(contents);
 
     // Send JSON data to Firebase Realtime Database
-    writeToFirestore(jsonData);
+    writeToFirestore(jsonData, file.name);
   };
 
   reader.readAsText(file);
 }
 
 function convertToJSON(contents) {
-  var json = {};
+  let json = {};
 
   // Split the contents by "|" character
-  var pairs = contents.split("|");
+  let pairs = contents.split("|");
 
   // Loop through each pair and split key and value
   pairs.forEach(function (pair) {
-    var keyValue = pair.split(" ");
-    var key = keyValue[0];
-    var value = parseInt(keyValue[1]);
+    let keyValue = pair.split(" ");
+    let key = keyValue[0];
+    let value = parseInt(keyValue[1]);
 
     // Add key-value pairs to JSON object
     json[key] = value;
@@ -37,10 +44,10 @@ function convertToJSON(contents) {
   return json;
 }
 
-async function writeToFirestore(data) {
+async function writeToFirestore(data, fileName) {
   try {
-    const collectionRef = firestore.collection("scores");
-    await collectionRef.add(data);
+    const collectionRef = collection(firestore, "scores");
+    await setDoc(doc(collectionRef, fileName), data);
     console.log("Data uploaded successfully!");
     document.getElementById("output").textContent =
       "Data uploaded successfully!";
@@ -50,4 +57,4 @@ async function writeToFirestore(data) {
       "Error uploading data to Firestore: " + error;
   }
 }
-document.getElementById("uploadButton").addEventListener("click", uploadFile);
+document.getElementById("uploadFile").addEventListener("click", uploadFile);
