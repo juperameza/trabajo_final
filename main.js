@@ -58,3 +58,4 @@ async function writeToFirestore(data, fileName) {
   }
 }
 document.getElementById("uploadFile").addEventListener("click", uploadFile);
+
