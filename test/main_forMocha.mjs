@@ -1,4 +1,11 @@
-const { firestore, doc, setDoc, getDocs, collection } = require("./config.mjs");
+import {
+  firestore,
+  doc,
+  setDoc,
+  getDocs,
+  addDoc,
+  collection,
+} from "./config_forMocha.mjs";
 
 function convertToJSON(contents) {
   let json = {};
@@ -31,9 +38,10 @@ async function writeToFirestore(data, fileName) {
   }
 }
 
-async function getUploadedFiles() {
+async function getUploadedFiles(
+  collectionRef = collection(firestore, "scores")
+) {
   try {
-    const collectionRef = collection(firestore, "scores");
     const querySnapshot = await getDocs(collectionRef);
 
     const files = [];
@@ -48,4 +56,4 @@ async function getUploadedFiles() {
   }
 }
 
-module.exports = { convertToJSON, writeToFirestore, getUploadedFiles };
+export { convertToJSON, writeToFirestore, getUploadedFiles };

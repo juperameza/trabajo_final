@@ -1,12 +1,3 @@
-const {
-  firestore,
-  doc,
-  setDoc,
-  getDocs,
-  addDoc,
-  collection,
-} = require("./config.mjs");
-
 // Mock getDocs to return a mock snapshot with a specified number of documents
 jest.mock("./config.mjs", () => {
   const originalModule = jest.requireActual("./config.mjs");

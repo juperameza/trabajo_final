@@ -4,7 +4,9 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "testcafe": "testcafe chrome test/testcafe.js",
+    "mocha": "mocha test/mochaTest.mjs"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +17,7 @@
   },
   "devDependencies": {
     "jest-environment-jsdom": "^29.5.0",
+    "mocha": "^10.2.0",
     "testcafe": "^2.6.0"
   }
 }
