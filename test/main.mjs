@@ -1,11 +1,11 @@
-import {
+const {
   firestore,
   doc,
   setDoc,
   getDocs,
   addDoc,
   collection,
-} from "./config.js";
+} = require("./config.mjs");
 
 function uploadFile() {
   let fileInput = document.getElementById("fileInput");
@@ -64,11 +64,8 @@ async function getUploadedFiles() {
 
     const files = [];
     querySnapshot.forEach((doc) => {
-      files.push({ ...doc.data() });
+      files.push(doc.id);
     });
-    console.log("Uploaded files:", files.length);
-    // Create the chart
-    createChart(files);
 
     return files;
   } catch (error) {
@@ -77,46 +74,7 @@ async function getUploadedFiles() {
   }
 }
 
-function createChart(files) {
-  const ctx = document.getElementById("chart").getContext("2d");
-  const labels = Object.keys(files[0]);
-  const sumObject = files.reduce((acc, curr) => {
-    for (let key in curr) {
-      if (acc.hasOwnProperty(key)) {
-        acc[key] += curr[key];
-      } else {
-        acc[key] = curr[key];
-      }
-    }
-    return acc; // Added the return statement here
-  }, {});
-  const data = Object.values(sumObject);
-
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: "File Data",
-          data: data,
-          backgroundColor: "rgba(75, 192, 192, 0.2)",
-          borderColor: "rgba(75, 192, 192, 1)",
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: Math.max(...data) + 10,
-        },
-      },
-    },
-  });
-}
-
-document.getElementById("uploadFile").addEventListener("click", uploadFile);
-getUploadedFiles();
-export { getUploadedFiles };
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("uploadFile").addEventListener("click", uploadFile);
+});
+module.exports = { getUploadedFiles };
