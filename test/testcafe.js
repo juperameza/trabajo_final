@@ -1,5 +1,5 @@
 const { Selector } = require("testcafe");
-fixture("Test botón").page("http://127.0.0.1:5500/index.html"); //Cambia la url por la de la página que hiciste
+fixture("Test botón").page("https://juperameza.github.io/trabajo_final/"); //Cambia la url por la de la página que hiciste
 
 test("Upload files and check table", async (t) => {
   await t
